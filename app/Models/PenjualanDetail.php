@@ -29,7 +29,7 @@ class PenjualanDetail extends Model
         return $this->belongsTo(Barang::class, 'barang_id', 'barang_id');
     }
 
-    public function subtotal()
+    public function getSubtotalAttribute()
     {
         return $this->harga * $this->jumlah;
     }

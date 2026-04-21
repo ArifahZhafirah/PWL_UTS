@@ -14,8 +14,11 @@ class Barang extends Model
         'barang_kode',
         'barang_nama',
         'harga_beli',
-        'harga_jual'
+        'harga_jual',
     ];
+
+    // Tambahkan ini agar stok_total bisa di-eager load & sortable
+    protected $appends = ['stok_total'];
 
     public function kategori()
     {
@@ -30,5 +33,13 @@ class Barang extends Model
     public function detailPenjualan()
     {
         return $this->hasMany(PenjualanDetail::class, 'barang_id');
+    }
+
+    // Accessor: stok masuk - stok keluar
+    public function getStokTotalAttribute(): int
+    {
+        $masuk = $this->stok()->sum('stok_jumlah');
+        $keluar = $this->detailPenjualan()->sum('jumlah');
+        return max(0, $masuk - $keluar);
     }
 }

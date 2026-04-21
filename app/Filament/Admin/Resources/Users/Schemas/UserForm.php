@@ -2,26 +2,33 @@
 
 namespace App\Filament\Admin\Resources\Users\Schemas;
 
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 
 class UserForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->components([
-                TextInput::make('name')
+            ->schema([
+                Select::make('level_id')
+                    ->label('Level')
+                    ->relationship('level', 'level_nama')
                     ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
+
+                TextInput::make('username')
+                    ->required()
+                    ->maxLength(20),
+
+                TextInput::make('nama')
+                    ->required()
+                    ->maxLength(100),
+
                 TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 }
